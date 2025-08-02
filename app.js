@@ -20,6 +20,9 @@ main().catch((err) => {
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(express.urlencoded({ extended: true }));
+
+
 // Root route
 app.get("/", (req, res) => {
   res.send("Hi, I am root");
@@ -32,7 +35,7 @@ app.get("/testListing", async (req, res) => {
     description: "By the beach",
     price: 1200,
     location: "Calangute, Goa",
-    country: "India"
+    country: "India",
   });
 
   await sampleListing.save();
@@ -40,10 +43,14 @@ app.get("/testListing", async (req, res) => {
   res.send("Successful testing");
 });
 
-app.get("/listing", async (req, res) => {
+app.get("/listings", async (req, res) => {
   const allListings = await Listing.find({});
-  res.render("listings/index", { allListings });
+  res.render("views/listings/index.ejs", { allListings });
+});
 
+//new route
+app.get("/listings/new", (req, res) => {
+  res.render("listings/new.ejs");
 });
 
 app.get("/listings/:id", async (req, res) => {
@@ -51,7 +58,18 @@ app.get("/listings/:id", async (req, res) => {
 
   const listing = await Listing.findById(id);
   res.render("listings/show.ejs", { listing });
+});
 
+app.post("/listings", async (req, res) => {
+  try {
+    let listingData = req.body.listing;
+    let newListing = new Listing(listingData);
+    await newListing.save();
+    res.redirect("/listings"); // redirect to show all listings
+  } catch (err) {
+    console.error("Error saving listing:", err);
+    res.status(500).send("Failed to save listing.");
+  }
 });
 
 app.listen(8080, () => {

@@ -5,16 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>WanderLust</title>
   </head>
-  <body>
-    <h3>All Listings</h3>
-    <ul>
-      <% allListings.forEach(listing => { %>
+<body>
+  <h1>All Listings</h1>
+
+  <ul>
+    <% allListings.forEach((listing) => { %>
       <li>
-        <a href="/listings/<%= listing._id%>"
-          ><%= listing.title %> - <%= listing.location %></a
-        >
+        <a href="/listings/<%= listing._id %>"><%= listing.title %></a>
+        - <%= listing.price %> Rs
+        - <%= listing.location %>, <%= listing.country %>
       </li>
-      <% }) %>
-    </ul>
-  </body>
+    <% }) %>
+  </ul>
+
+  <a href="/listings/new">Add New Listing</a>
+</body>
 </html>
