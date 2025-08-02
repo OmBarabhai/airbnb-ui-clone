@@ -8,6 +8,9 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 const Listing = require("./models/listing.js");
 
+const methodOverride = require('method-override');
+
+
 // Connect to MongoDB
 async function main() {
   await mongoose.connect(MONGO_URL);
@@ -22,6 +25,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true }));
 
+app.use(methodOverride('_method'));
 
 // Root route
 app.get("/", (req, res) => {
@@ -72,6 +76,28 @@ app.post("/listings", async (req, res) => {
     res.status(500).send("Failed to save listing.");
   }
 });
+
+// Edit route
+app.get("/listings/:id/edit", async (req, res) => {
+  const { id } = req.params;
+  const listing = await Listing.findById(id);
+  res.render("listings/edit", { listing });
+});
+
+//update put
+app.put("/listings/:id", async (req, res) => {
+  const { id } = req.params;
+  console.log("Updating listing with data:", req.body); // 👈 helpful debug
+
+  try {
+    const listing = await Listing.findByIdAndUpdate(id, req.body.listing);
+    res.redirect(`/listings/${listing._id}`);
+  } catch (err) {
+    console.error("Update error:", err);
+    res.status(500).send("Failed to update listing.");
+  }
+});
+
 
 app.listen(8080, () => {
   console.log("Server is listening on port 8080");
