@@ -6,18 +6,20 @@
     <title>WanderLust</title>
   </head>
   <body>
-    <h3>Listing Details: </h3>
+    <h3>Listing Details:</h3>
     <ul>
-      <li><%=  listing.title%></li>
-      <li><%=  listing.description%></li>
-      <li> &#8377; <%=  listing.price.toLocaleString("en-IN")%></li>
-      <li><%=  listing.country%></li>
-
+      <li><%= listing.title%></li>
+      <li><%= listing.description%></li>
+      <li>&#8377; <%= listing.price.toLocaleString("en-IN")%></li>
+      <li><%= listing.country%></li>
     </ul>
-    <br>
+    <br />
 
     <a href="/listings/<%= listing._id %>/edit">Edit this listening</a>
-
-
-     </body>
+    <br />
+    <br />
+    <form method="POST" action=" /listings/<%=listing.id%>?_method=DELETE">
+    <button>Delete This Listing</button>
+ </form>
+  </body>
 </html>

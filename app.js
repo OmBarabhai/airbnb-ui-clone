@@ -8,8 +8,7 @@ const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 const Listing = require("./models/listing.js");
 
-const methodOverride = require('method-override');
-
+const methodOverride = require("method-override");
 
 // Connect to MongoDB
 async function main() {
@@ -25,7 +24,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use(methodOverride('_method'));
+app.use(methodOverride("_method"));
 
 // Root route
 app.get("/", (req, res) => {
@@ -50,7 +49,6 @@ app.get("/testListing", async (req, res) => {
 app.get("/listings", async (req, res) => {
   const allListings = await Listing.find({});
   res.render("listings/index.ejs", { allListings });
-
 });
 
 //new route
@@ -86,7 +84,7 @@ app.get("/listings/:id/edit", async (req, res) => {
 
 //update put
 app.put("/listings/:id", async (req, res) => {
-  const { id } = req.params;
+  let { id } = req.params;
   console.log("Updating listing with data:", req.body); // 👈 helpful debug
 
   try {
@@ -98,6 +96,12 @@ app.put("/listings/:id", async (req, res) => {
   }
 });
 
+app.delete("/listings/:id", async (req, res) => {
+  let { id } = req.params;
+  let deletedListing = await Listing.findByIdAndDelete(id);
+  console.log(deletedListing);
+  res.redirect("/listings");
+});
 
 app.listen(8080, () => {
   console.log("Server is listening on port 8080");
