@@ -62,6 +62,10 @@ app.get("/listings/new", (req, res) => {
   res.render("listings/new.ejs");
 });
 
+app.get("/test", (req, res) => {
+  res.render("testNavbar");
+});
+
 app.get("/listings/:id", async (req, res) => {
   let { id } = req.params;
 

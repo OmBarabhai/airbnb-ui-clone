@@ -1,16 +1,19 @@
-<% layout("/layouts/boilerplate") %>
-<body>
-  <h1>All Listings</h1>
+<% layout("layouts/boilerplate") %>
 
-  <ul>
-    <% allListings.forEach((listing) => { %>
-      <li>
-        <a href="/listings/<%= listing._id %>"><%= listing.title %></a>
-        - <%= listing.price %> Rs
-        - <%= listing.location %>, <%= listing.country %>
-      </li>
-    <% }) %>
-  </ul>
+<h3>All Listings</h3>
 
-  <a href="/listings/new">Add New Listing</a>
-</body>
+<!-- Optional: Create Listing button -->
+<!--
+<form method="GET" action="/listings/new">
+  <button>Create New Listing</button>
+</form>
+-->
+
+<ul>
+  <% for (let listing of allListings) { %>
+  <li>
+    <a href="/listings/<%= listing._id %>"><%= listing.title %></a>
+    <a href="/listings/<%= listing._id %>"><%= listing.title %></a>
+  </li>
+  <% } %>
+</ul>
