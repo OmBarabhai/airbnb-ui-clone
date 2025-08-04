@@ -10,6 +10,8 @@ const Listing = require("./models/listing.js");
 
 const methodOverride = require("method-override");
 
+const ejsMate = require("ejs-mate");
+
 // Connect to MongoDB
 async function main() {
   await mongoose.connect(MONGO_URL);
@@ -25,6 +27,8 @@ app.set("views", path.join(__dirname, "views"));
 app.use(express.urlencoded({ extended: true }));
 
 app.use(methodOverride("_method"));
+
+app.engine('ejs', ejsMate);
 
 // Root route
 app.get("/", (req, res) => {
