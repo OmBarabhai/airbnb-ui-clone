@@ -267,3 +267,256 @@ footer {
     opacity: 1;
   }
 }
+
+
+/* Airbnb-Style Listings CSS */
+.listings-header {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 60px 0 40px;
+  margin-bottom: 40px;
+}
+
+.listings-header h2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.listings-header p {
+  font-size: 1.1rem;
+  opacity: 0.9;
+  margin: 0;
+}
+
+/* Listings Grid */
+.listings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 24px;
+  padding: 0 0 60px;
+}
+
+/* Individual Listing Card */
+.listing-card {
+  background: white;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.08);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.listing-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+/* Card Image */
+.card-image {
+  position: relative;
+  width: 100%;
+  height: 220px;
+  overflow: hidden;
+}
+
+.card-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease;
+}
+
+.listing-card:hover .card-image img {
+  transform: scale(1.05);
+}
+
+/* Card Overlay */
+.card-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.listing-card:hover .card-overlay {
+  opacity: 1;
+}
+
+.favorite-btn {
+  background: rgba(255, 255, 255, 0.9);
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.favorite-btn:hover {
+  background: white;
+  transform: scale(1.1);
+}
+
+.favorite-btn i {
+  color: #222;
+  font-size: 14px;
+}
+
+/* Card Content */
+.card-content {
+  padding: 16px;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 8px;
+}
+
+.card-title {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #222;
+  margin: 0;
+  line-height: 1.3;
+  flex: 1;
+  margin-right: 8px;
+}
+
+.card-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  color: #222;
+}
+
+.card-rating i {
+  color: #FF385C;
+  font-size: 12px;
+}
+
+.card-location {
+  color: #717171;
+  font-size: 14px;
+  margin: 4px 0;
+  font-weight: 400;
+}
+
+.card-dates {
+  color: #717171;
+  font-size: 14px;
+  margin: 4px 0 16px;
+}
+
+/* Card Footer */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 8px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.card-price {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.card-price strong {
+  font-size: 16px;
+  font-weight: 600;
+  color: #222;
+}
+
+.card-price span {
+  font-size: 14px;
+  color: #717171;
+  font-weight: 400;
+}
+
+.view-btn {
+  background: #FF385C;
+  color: white;
+  text-decoration: none;
+  padding: 8px 16px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.view-btn:hover {
+  background: #E31C5F;
+  color: white;
+  text-decoration: none;
+  transform: translateY(-1px);
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .listings-header {
+    padding: 40px 0 30px;
+    text-align: center;
+  }
+  
+  .listings-header h2 {
+    font-size: 2rem;
+  }
+  
+  .listings-grid {
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+    padding: 0 0 40px;
+  }
+  
+  .card-image {
+    height: 200px;
+  }
+}
+
+@media (max-width: 480px) {
+  .listings-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+  
+  .card-content {
+    padding: 14px;
+  }
+  
+  .listings-header h2 {
+    font-size: 1.75rem;
+  }
+}
+
+/* Loading Animation */
+.listing-card {
+  opacity: 0;
+  animation: fadeInUp 0.6s ease-out forwards;
+}
+
+.listing-card:nth-child(1) { animation-delay: 0.1s; }
+.listing-card:nth-child(2) { animation-delay: 0.2s; }
+.listing-card:nth-child(3) { animation-delay: 0.3s; }
+.listing-card:nth-child(4) { animation-delay: 0.4s; }
+.listing-card:nth-child(5) { animation-delay: 0.5s; }
+.listing-card:nth-child(6) { animation-delay: 0.6s; }
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,19 +1,52 @@
 <% layout("layouts/boilerplate") %>
 
-<h3>All Listings</h3>
+<!-- Page Header -->
+<div class="listings-header">
+  <div class="container">
+    <h2>All Listings</h2>
+    <p>Find your perfect stay from our collection of unique properties</p>
+  </div>
+</div>
 
-<!-- Optional: Create Listing button -->
-<!--
-<form method="GET" action="/listings/new">
-  <button>Create New Listing</button>
-</form>
--->
+<!-- Listings Grid -->
+<div class="container">
+  <div class="listings-grid">
+    <% for (let listing of allListings) { %>
+    <div class="listing-card">
+      <div class="card-image">
+        <img src="/images/beach-cottage.jpg" alt="Test" />
 
-<ul>
-  <% for (let listing of allListings) { %>
-  <li>
-    <a href="/listings/<%= listing._id %>"><%= listing.title %></a>
-    <a href="/listings/<%= listing._id %>"><%= listing.title %></a>
-  </li>
-  <% } %>
-</ul>
+
+        <div class="card-overlay">
+          <button class="favorite-btn">
+            <i class="far fa-heart"></i>
+          </button>
+        </div>
+      </div>
+
+      <div class="card-content">
+        <div class="card-header">
+          <h5 class="card-title"><%= listing.title %></h5>
+          <div class="card-rating">
+            <i class="fas fa-star"></i>
+            <span>4.8</span>
+          </div>
+        </div>
+
+        <p class="card-location">Private room in city center</p>
+        <p class="card-dates">Available now</p>
+
+        <div class="card-footer">
+          <div class="card-price">
+            <strong>₹<%= listing.price.toLocaleString() %></strong>
+            <span>per night</span>
+          </div>
+          <a href="/listings/<%= listing._id %>" class="view-btn"
+            >View Details</a
+          >
+        </div>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</div>
