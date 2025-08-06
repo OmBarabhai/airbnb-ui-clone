@@ -1,3 +1,4 @@
+// models/listing.js
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
@@ -8,8 +9,8 @@ const listingSchema = new Schema({
   },
   description: String,
   image: {
-    type: String,
-    default: "/images/beach-cottage.jpg", // fallback image
+    url: String,
+    filename: String,
   },
   price: Number,
   location: String,

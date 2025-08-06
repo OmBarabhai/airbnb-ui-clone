@@ -1,52 +1,385 @@
 <% layout("layouts/boilerplate") %>
 
-<!-- Page Header -->
-<div class="listings-header">
+<!-- Enhanced Page Header with Search -->
+<div class="listings-hero">
   <div class="container">
-    <h2>All Listings</h2>
-    <p>Find your perfect stay from our collection of unique properties</p>
+    <div class="hero-content">
+      <h1 class="hero-title">Find Your Perfect Stay</h1>
+      <p class="hero-subtitle">Discover unique properties and experiences around the world</p>
+      
+      <!-- Enhanced Search Bar -->
+      <div class="search-container">
+        <form action="/listings" method="GET" class="search-form">
+          <div class="search-inputs">
+            <div class="search-field">
+              <i class="fas fa-search"></i>
+              <input 
+                type="text" 
+                name="search" 
+                placeholder="Where are you going?"
+                value="<%= searchParams?.search || '' %>"
+                class="search-input"
+              >
+            </div>
+            
+            <div class="search-field">
+              <i class="fas fa-dollar-sign"></i>
+              <input 
+                type="number" 
+                name="minPrice" 
+                placeholder="Min Price"
+                value="<%= searchParams?.minPrice || '' %>"
+                class="price-input"
+              >
+            </div>
+            
+            <div class="search-field">
+              <i class="fas fa-dollar-sign"></i>
+              <input 
+                type="number" 
+                name="maxPrice" 
+                placeholder="Max Price"
+                value="<%= searchParams?.maxPrice || '' %>"
+                class="price-input"
+              >
+            </div>
+            
+            <div class="search-field">
+              <i class="fas fa-globe"></i>
+              <select name="country" class="country-select">
+                <option value="">All Countries</option>
+                <% if (typeof countries !== 'undefined') { %>
+                  <% countries.forEach(country => { %>
+                    <option value="<%= country %>" <%= searchParams?.country === country ? 'selected' : '' %>>
+                      <%= country %>
+                    </option>
+                  <% }) %>
+                <% } %>
+              </select>
+            </div>
+            
+            <button type="submit" class="search-btn">
+              <i class="fas fa-search"></i>
+              Search
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </div>
 
-<!-- Listings Grid -->
+<!-- Filters & Results Info -->
+<div class="container">
+  <div class="filters-section">
+    <div class="results-info">
+      <h3><%= allListings.length %> properties found</h3>
+      <% if (searchParams?.search) { %>
+        <p class="search-info">Results for "<%= searchParams.search %>"</p>
+      <% } %>
+    </div>
+    
+    <div class="filter-buttons">
+      <button class="filter-btn active" data-filter="all">
+        <i class="fas fa-th"></i> All
+      </button>
+      <button class="filter-btn" data-filter="new">
+        <i class="fas fa-star"></i> New
+      </button>
+      <button class="filter-btn" data-filter="superhost">
+        <i class="fas fa-crown"></i> Superhost
+      </button>
+      <button class="filter-btn" data-filter="luxury">
+        <i class="fas fa-gem"></i> Luxury
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Enhanced Listings Grid -->
 <div class="container">
   <div class="listings-grid">
-    <% for (let listing of allListings) { %>
-    <div class="listing-card">
-      <div class="card-image">
-        <!-- Use the image from the database, with fallback -->
-        <img src="<%= listing.image || '/images/beach-cottage.jpg' %>" 
-             alt="<%= listing.title %>" 
-             onerror="this.src='/images/beach-cottage.jpg'" />
-
+    <% allListings.forEach((listing, index) => { %>
+    <div class="listing-card" data-price="<%= listing.price %>" data-country="<%= listing.country %>">
+      <div class="card-image-container">
+        <img 
+          src="<%= listing.image || '/images/beach-cottage.jpg' %>" 
+          alt="<%= listing.title %>" 
+          class="card-image"
+          loading="<%= index < 6 ? 'eager' : 'lazy' %>"
+          onerror="this.src='/images/beach-cottage.jpg'"
+        />
+        
+        <!-- Enhanced Overlay Elements -->
         <div class="card-overlay">
-          <button class="favorite-btn">
+          <button class="favorite-btn" onclick="toggleFavorite(this)">
             <i class="far fa-heart"></i>
           </button>
+          
+          <% if (listing.isNewListing) { %>
+            <span class="badge badge-new">New</span>
+          <% } %>
+          
+          <% if (listing.isSuperhost) { %>
+            <span class="badge badge-superhost">
+              <i class="fas fa-crown"></i> Superhost
+            </span>
+          <% } %>
+        </div>
+
+        <!-- Image Navigation Dots -->
+        <div class="image-dots">
+          <span class="dot active"></span>
+          <span class="dot"></span>
+          <span class="dot"></span>
         </div>
       </div>
 
       <div class="card-content">
+        <!-- Location & Rating Header -->
         <div class="card-header">
-          <h5 class="card-title"><%= listing.title %></h5>
-          <div class="card-rating">
-            <i class="fas fa-star"></i>
-            <span>4.8</span>
+          <div class="location-info">
+            <h5 class="card-title"><%= listing.title %></h5>
+            <p class="card-location">
+              <i class="fas fa-map-marker-alt"></i>
+              <%= listing.location %>, <%= listing.country %>
+            </p>
+          </div>
+          
+          <div class="rating-container">
+            <div class="card-rating">
+              <i class="fas fa-star"></i>
+              <span class="rating-value"><%= listing.rating || '4.8' %></span>
+            </div>
+            <p class="review-count">(<%= listing.reviewCount || '25' %> reviews)</p>
           </div>
         </div>
 
-        <p class="card-location">Private room in city center</p>
-        <p class="card-dates">Available now</p>
-
-        <div class="card-footer">
-          <div class="card-price">
-            <strong>₹<%= listing.price.toLocaleString() %></strong>
-            <span>per night</span>
+        <!-- Property Details -->
+        <div class="property-details">
+          <div class="detail-item">
+            <i class="fas fa-bed"></i>
+            <span>Private room</span>
           </div>
-          <a href="/listings/<%= listing._id %>" class="view-btn">View Details</a>
+          <div class="detail-item">
+            <i class="fas fa-route"></i>
+            <span><%= listing.distance || '5' %> km from center</span>
+          </div>
+        </div>
+
+        <!-- Availability Status -->
+        <div class="availability-status">
+          <span class="status-indicator available"></span>
+          <span class="status-text">Available now</span>
+        </div>
+
+        <!-- Enhanced Card Footer -->
+        <div class="card-footer">
+          <div class="pricing-info">
+            <div class="price-container">
+              <span class="currency">₹</span>
+              <span class="price-amount"><%= listing.price.toLocaleString() %></span>
+              <span class="price-period">/ night</span>
+            </div>
+            <p class="tax-info">+ ₹<%= Math.round(listing.price * 0.18) %> taxes</p>
+          </div>
+          
+          <div class="action-buttons">
+            <button class="quick-view-btn" onclick="quickView('<%= listing._id %>')">
+              <i class="fas fa-eye"></i>
+            </button>
+            <a href="/listings/<%= listing._id %>" class="view-btn">
+              View Details
+              <i class="fas fa-arrow-right"></i>
+            </a>
+          </div>
         </div>
       </div>
+
+      <!-- Hover Effect Animation -->
+      <div class="card-hover-effect"></div>
     </div>
-    <% } %>
+    <% }) %>
+  </div>
+
+  <!-- Load More Button -->
+  <% if (allListings.length > 0) { %>
+  <div class="load-more-container">
+    <button class="load-more-btn" onclick="loadMoreListings()">
+      <i class="fas fa-plus"></i>
+      Load More Properties
+    </button>
+  </div>
+  <% } %>
+
+  <!-- No Results Message -->
+  <% if (allListings.length === 0) { %>
+  <div class="no-results">
+    <div class="no-results-content">
+      <i class="fas fa-search"></i>
+      <h3>No properties found</h3>
+      <p>Try adjusting your search filters or explore different locations</p>
+      <a href="/listings" class="btn-primary">View All Properties</a>
+    </div>
+  </div>
+  <% } %>
+</div>
+
+<!-- Quick View Modal -->
+<div class="modal-overlay" id="quickViewModal">
+  <div class="quick-view-modal">
+    <button class="close-modal" onclick="closeQuickView()">
+      <i class="fas fa-times"></i>
+    </button>
+    <div class="modal-content" id="quickViewContent">
+      <!-- Content will be loaded dynamically -->
+    </div>
   </div>
 </div>
+
+<!-- Enhanced JavaScript -->
+<script>
+// Filter functionality
+document.querySelectorAll('.filter-btn').forEach(btn => {
+  btn.addEventListener('click', function() {
+    // Remove active class from all buttons
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    this.classList.add('active');
+    
+    const filter = this.dataset.filter;
+    const cards = document.querySelectorAll('.listing-card');
+    
+    cards.forEach(card => {
+      const isNew = card.querySelector('.badge-new');
+      const isSuperhost = card.querySelector('.badge-superhost');
+      const price = parseInt(card.dataset.price);
+      
+      let show = true;
+      
+      switch(filter) {
+        case 'new':
+          show = isNew !== null;
+          break;
+        case 'superhost':
+          show = isSuperhost !== null;
+          break;
+        case 'luxury':
+          show = price > 5000;
+          break;
+        case 'all':
+        default:
+          show = true;
+      }
+      
+      if (show) {
+        card.style.display = 'block';
+        card.classList.add('animate-in');
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  });
+});
+
+// Favorite toggle functionality
+function toggleFavorite(btn) {
+  const icon = btn.querySelector('i');
+  const isFavorited = icon.classList.contains('fas');
+  
+  if (isFavorited) {
+    icon.classList.remove('fas');
+    icon.classList.add('far');
+    btn.classList.remove('favorited');
+  } else {
+    icon.classList.add('fas');
+    icon.classList.remove('far');
+    btn.classList.add('favorited');
+  }
+  
+  // Add animation
+  btn.classList.add('favorite-animation');
+  setTimeout(() => btn.classList.remove('favorite-animation'), 300);
+}
+
+// Quick view functionality
+function quickView(listingId) {
+  const modal = document.getElementById('quickViewModal');
+  const content = document.getElementById('quickViewContent');
+  
+  // Show modal with loading
+  modal.style.display = 'flex';
+  content.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i><p>Loading...</p></div>';
+  
+  // Fetch listing details
+  fetch(`/api/listings/${listingId}`)
+    .then(response => response.json())
+    .then(data => {
+      content.innerHTML = `
+        <div class="quick-view-header">
+          <img src="${data.image}" alt="${data.title}" class="quick-view-image">
+          <div class="quick-view-info">
+            <h3>${data.title}</h3>
+            <p class="location">${data.location}, ${data.country}</p>
+            <div class="rating">
+              <i class="fas fa-star"></i>
+              <span>${data.rating || '4.8'} (${data.reviewCount || '25'} reviews)</span>
+            </div>
+          </div>
+        </div>
+        <div class="quick-view-details">
+          <p class="description">${data.description}</p>
+          <div class="price-info">
+            <span class="price">₹${data.price.toLocaleString()}</span>
+            <span class="period">per night</span>
+          </div>
+          <a href="/listings/${data._id}" class="btn-primary">View Full Details</a>
+        </div>
+      `;
+    })
+    .catch(error => {
+      content.innerHTML = '<div class="error"><p>Error loading property details</p></div>';
+    });
+}
+
+function closeQuickView() {
+  document.getElementById('quickViewModal').style.display = 'none';
+}
+
+// Load more functionality (placeholder)
+function loadMoreListings() {
+  const btn = document.querySelector('.load-more-btn');
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Loading...';
+  
+  // Simulate loading delay
+  setTimeout(() => {
+    btn.innerHTML = '<i class="fas fa-plus"></i> Load More Properties';
+    // In a real app, you would fetch more data here
+  }, 1500);
+}
+
+// Smooth scroll animations
+const observerOptions = {
+  threshold: 0.1,
+  rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('animate-in');
+    }
+  });
+}, observerOptions);
+
+// Observe all listing cards for animation
+document.querySelectorAll('.listing-card').forEach(card => {
+  observer.observe(card);
+});
+
+// Close modal when clicking outside
+document.getElementById('quickViewModal').addEventListener('click', function(e) {
+  if (e.target === this) {
+    closeQuickView();
+  }
+});
+</script>

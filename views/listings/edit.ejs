@@ -8,18 +8,21 @@
   </div>
 
   <div class="edit-content">
-    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="edit-form">
-      
+    <form
+      action="/listings/<%= listing._id %>?_method=PUT"
+      method="POST"
+      class="edit-form"
+    >
       <!-- Title Section -->
       <div class="form-section">
         <h3>Property Title</h3>
         <div class="form-group">
           <label for="title">Give your place a catchy title</label>
-          <input 
-            type="text" 
+          <input
+            type="text"
             id="title"
-            name="listing[title]" 
-            value="<%= listing.title %>" 
+            name="listing[title]"
+            value="<%= listing.title %>"
             class="form-control"
             placeholder="e.g., Cozy Beachfront Villa with Ocean Views"
             required
@@ -31,15 +34,21 @@
       <div class="form-section">
         <h3>Description</h3>
         <div class="form-group">
-          <label for="description">Describe what makes your place special</label>
-          <textarea 
+          <label for="description"
+            >Describe what makes your place special</label
+          >
+          <textarea
             id="description"
-            name="listing[description]" 
+            name="listing[description]"
             class="form-control textarea-large"
             placeholder="Tell guests what they can expect from your place. What makes it unique? What's the neighborhood like?"
             rows="6"
-          ><%= listing.description %></textarea>
-          <small class="form-text">Help guests understand why they'll love staying here</small>
+          >
+<%= listing.description %></textarea
+          >
+          <small class="form-text"
+            >Help guests understand why they'll love staying here</small
+          >
         </div>
       </div>
 
@@ -70,7 +79,9 @@
             />
           </div>
         </div>
-        <small class="form-text">Add beautiful photos to showcase your property</small>
+        <small class="form-text"
+          >Add beautiful photos to showcase your property</small
+        >
       </div>
 
       <!-- Pricing Section -->
@@ -126,6 +137,23 @@
         </div>
         <small class="form-text">Help guests find your place easily</small>
       </div>
+      <input
+        type="text"
+        id="image-url"
+        name="listing[image][url]"
+        value="<%= listing.image?.url || '' %>"
+        class="form-control"
+        placeholder="https://example.com/image.jpg"
+      />
+
+      <input
+        type="text"
+        id="image-filename"
+        name="listing[image][filename]"
+        value="<%= listing.image?.filename || '' %>"
+        class="form-control"
+        placeholder="beach-house.jpg"
+      />
 
       <!-- Action Buttons -->
       <div class="form-actions">
@@ -142,7 +170,6 @@
           Back to Listings
         </a>
       </div>
-
     </form>
   </div>
 </div>
