@@ -9,19 +9,22 @@ Users can browse, create, edit, and delete listings of places to stay. Built wit
 
 ## 📸 Screenshots
 
-> _(Add screenshots in `public/images` and link them here)_
-![alt text](ss1.png)
+Here are some UI highlights from Wanderlust:
 
-![alt text](ss2.png)
+### 🏠 Home Page with Search + Navbar
+![Home Page](public/images/ss1.png)
 
-![alt text](ss3.png)
+### 🏨 Listings on Home Page
+![All Listings](public/images/ss2.png)
 
-![alt text](ss4.png)
+### 📄 Listing Details View
+![Listing Detail](public/images/ss3.png)
 
-![alt text](ss5.png)
+### ✏️ Edit Listing Page
+![Edit Listing](public/images/ss4.png)
 
-
-
+### 🔍 Search Filter Results
+![Search Listings](public/images/ss5.png)
 
 
 ---

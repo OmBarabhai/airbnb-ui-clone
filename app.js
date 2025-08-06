@@ -64,8 +64,12 @@ app.use(express.static(path.join(__dirname, "/public")));
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);
-  res.status(500).send('Something went wrong!');
+  res.status(err.status || 500).render("error", {
+    message: err.message || "Something went wrong",
+    status: err.status || 500
+  });
 });
+
 
 // Enhanced root route
 app.get("/", (req, res) => {
