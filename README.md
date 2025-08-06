@@ -85,11 +85,10 @@ wanderlust/                      # Root project directory
 └── README.md                    # Project documentation
 ```
 ## 🧪 How to Run the Project
-
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/wanderlust.git
+   git clone https://github.com/OmBarabhai/wanderlust.git
    cd wanderlust
    ```
 
@@ -115,7 +114,7 @@ wanderlust/                      # Root project directory
 5. **Visit in Browser**
 
    ```
-   http://localhost:3000
+   http://localhost:8080/listings
    ```
 
 ---
