@@ -1,19 +1,172 @@
 <% layout("layouts/boilerplate") %>
-<body>
 
-<h3>Listing Details:</h3>
-<ul>
-  <li><%= listing.title %></li>
-  <li><%= listing.description %></li>
-  <li>&#8377; <%= listing.price.toLocaleString("en-IN") %></li>
-  <li><%= listing.country %></li>
-</ul>
+<!-- Hero Section -->
+<div class="listing-hero">
+  <div class="hero-image">
+    <img src="<%= listing.image || '/images/beach-cottage.jpg' %>" 
+         alt="<%= listing.title %>" 
+         onerror="this.src='/images/beach-cottage.jpg'" />
+    <div class="hero-overlay">
+      <button class="favorite-btn-large">
+        <i class="far fa-heart"></i>
+      </button>
+    </div>
+  </div>
+</div>
 
-<br />
-<a href="/listings/<%= listing._id %>/edit">Edit this listing</a>
-<br /><br />
+<!-- Listing Content -->
+<div class="container listing-container">
+  <div class="listing-content">
+    
+    <!-- Main Content -->
+    <div class="listing-main">
+      
+      <!-- Header -->
+      <div class="listing-header">
+        <div class="header-left">
+          <h1 class="listing-title"><%= listing.title %></h1>
+          <div class="listing-meta">
+            <div class="rating-location">
+              <div class="rating">
+                <i class="fas fa-star"></i>
+                <span><%= listing.rating || '4.8' %></span>
+                <span class="review-count">(42 reviews)</span>
+              </div>
+              <div class="location">
+                <i class="fas fa-map-marker-alt"></i>
+                <span><%= listing.location %>, <%= listing.country %></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
-<form method="POST" action="/listings/<%= listing._id %>?_method=DELETE">
-  <button>Delete This Listing</button>
-</form>
-</body>
+      <!-- Host Info -->
+      <div class="host-section">
+        <div class="host-avatar">
+          <img src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=60&h=60&fit=crop&crop=face" alt="Host" />
+        </div>
+        <div class="host-info">
+          <h3>Hosted by John</h3>
+          <p class="host-details">Superhost • 3 years hosting</p>
+        </div>
+      </div>
+
+      <!-- Amenities -->
+      <div class="amenities-section">
+        <h3>What this place offers</h3>
+        <div class="amenities-grid">
+          <div class="amenity-item">
+            <i class="fas fa-wifi"></i>
+            <span>Free WiFi</span>
+          </div>
+          <div class="amenity-item">
+            <i class="fas fa-car"></i>
+            <span>Free parking</span>
+          </div>
+          <div class="amenity-item">
+            <i class="fas fa-swimming-pool"></i>
+            <span>Pool</span>
+          </div>
+          <div class="amenity-item">
+            <i class="fas fa-utensils"></i>
+            <span>Kitchen</span>
+          </div>
+          <div class="amenity-item">
+            <i class="fas fa-tv"></i>
+            <span>TV</span>
+          </div>
+          <div class="amenity-item">
+            <i class="fas fa-wind"></i>
+            <span>Air conditioning</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div class="description-section">
+        <h3>About this place</h3>
+        <p class="description-text">
+          <%= listing.description || 'Experience the perfect getaway in this beautiful property. Located in a prime location, this space offers everything you need for a comfortable and memorable stay. The property features modern amenities and stunning views that will make your vacation unforgettable.' %>
+        </p>
+      </div>
+
+    </div>
+
+    <!-- Booking Sidebar -->
+    <div class="booking-sidebar">
+      <div class="booking-card">
+        <div class="price-section">
+          <div class="price">
+            <strong>₹<%= listing.price.toLocaleString() %></strong>
+            <span>per night</span>
+          </div>
+          <div class="rating-small">
+            <i class="fas fa-star"></i>
+            <span><%= listing.rating || '4.8' %></span>
+            <span class="review-count">(42)</span>
+          </div>
+        </div>
+
+        <!-- Booking Form -->
+        <div class="booking-form">
+          <div class="date-inputs">
+            <div class="input-group">
+              <label>CHECK-IN</label>
+              <input type="date" class="form-control" />
+            </div>
+            <div class="input-group">
+              <label>CHECK-OUT</label>
+              <input type="date" class="form-control" />
+            </div>
+          </div>
+          <div class="guest-input">
+            <label>GUESTS</label>
+            <select class="form-control">
+              <option>1 guest</option>
+              <option>2 guests</option>
+              <option>3 guests</option>
+              <option>4 guests</option>
+            </select>
+          </div>
+          <button class="reserve-btn">Reserve</button>
+        </div>
+
+        <!-- Price Breakdown -->
+        <div class="price-breakdown">
+          <div class="price-row">
+            <span>₹<%= listing.price.toLocaleString() %> × 5 nights</span>
+            <span>₹<%= (listing.price * 5).toLocaleString() %></span>
+          </div>
+          <div class="price-row">
+            <span>Service fee</span>
+            <span>₹<%= Math.round(listing.price * 0.1).toLocaleString() %></span>
+          </div>
+          <div class="price-row total">
+            <strong>Total</strong>
+            <strong>₹<%= (listing.price * 5 + Math.round(listing.price * 0.1)).toLocaleString() %></strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <a href="/listings/<%= listing._id %>/edit" class="btn btn-warning">
+      <i class="fas fa-edit"></i> Edit Listing
+    </a>
+    
+    <form method="POST" action="/listings/<%= listing._id %>?_method=DELETE" style="display: inline;">
+      <button class="btn btn-danger" type="submit" onclick="return confirm('Are you sure you want to delete this listing?')">
+        <i class="fas fa-trash"></i> Delete Listing
+      </button>
+    </form>
+    
+    <a href="/listings" class="btn btn-secondary">
+      <i class="fas fa-arrow-left"></i> Back to Listings
+    </a>
+  </div>
+
+</div>

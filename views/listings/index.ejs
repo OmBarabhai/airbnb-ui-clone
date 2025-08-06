@@ -14,8 +14,10 @@
     <% for (let listing of allListings) { %>
     <div class="listing-card">
       <div class="card-image">
-        <img src="/images/beach-cottage.jpg" alt="Test" />
-
+        <!-- Use the image from the database, with fallback -->
+        <img src="<%= listing.image || '/images/beach-cottage.jpg' %>" 
+             alt="<%= listing.title %>" 
+             onerror="this.src='/images/beach-cottage.jpg'" />
 
         <div class="card-overlay">
           <button class="favorite-btn">
@@ -41,9 +43,7 @@
             <strong>₹<%= listing.price.toLocaleString() %></strong>
             <span>per night</span>
           </div>
-          <a href="/listings/<%= listing._id %>" class="view-btn"
-            >View Details</a
-          >
+          <a href="/listings/<%= listing._id %>" class="view-btn">View Details</a>
         </div>
       </div>
     </div>

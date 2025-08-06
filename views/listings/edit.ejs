@@ -1,53 +1,148 @@
-<!DOCTYPE html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>WanderLust</title>
-  </head>
-  <body>
-    <h3>Edit Your Listing</h3>
+<% layout("layouts/boilerplate") %>
 
-    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST">
-      <input type="text" name="listing[title]" value="<%= listing.title %>" />
+<!-- Edit Form Container -->
+<div class="edit-container">
+  <div class="edit-header">
+    <h1>Edit Your Listing</h1>
+    <p>Update your property details to attract more guests</p>
+  </div>
 
-      <br /><br />
+  <div class="edit-content">
+    <form action="/listings/<%= listing._id %>?_method=PUT" method="POST" class="edit-form">
+      
+      <!-- Title Section -->
+      <div class="form-section">
+        <h3>Property Title</h3>
+        <div class="form-group">
+          <label for="title">Give your place a catchy title</label>
+          <input 
+            type="text" 
+            id="title"
+            name="listing[title]" 
+            value="<%= listing.title %>" 
+            class="form-control"
+            placeholder="e.g., Cozy Beachfront Villa with Ocean Views"
+            required
+          />
+        </div>
+      </div>
 
-      <textarea name="listing[description]"><%= listing.description %></textarea>
+      <!-- Description Section -->
+      <div class="form-section">
+        <h3>Description</h3>
+        <div class="form-group">
+          <label for="description">Describe what makes your place special</label>
+          <textarea 
+            id="description"
+            name="listing[description]" 
+            class="form-control textarea-large"
+            placeholder="Tell guests what they can expect from your place. What makes it unique? What's the neighborhood like?"
+            rows="6"
+          ><%= listing.description %></textarea>
+          <small class="form-text">Help guests understand why they'll love staying here</small>
+        </div>
+      </div>
 
-      <br /><br />
+      <!-- Images Section -->
+      <div class="form-section">
+        <h3>Photos</h3>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="image-url">Image URL</label>
+            <input
+              type="text"
+              id="image-url"
+              name="listing[image][url]"
+              value="<%= listing.image?.url || '' %>"
+              class="form-control"
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="image-filename">Image Filename</label>
+            <input
+              type="text"
+              id="image-filename"
+              name="listing[image][filename]"
+              value="<%= listing.image?.filename || '' %>"
+              class="form-control"
+              placeholder="beach-house.jpg"
+            />
+          </div>
+        </div>
+        <small class="form-text">Add beautiful photos to showcase your property</small>
+      </div>
 
-      <input
-        name="listing[image[url]]"
-        value="<%= listing.image?.url || '' %>"
-        type="text"
-      />
-      <input
-        name="listing[image[filename]]"
-        value="<%= listing.image?.filename || '' %>"
-        type="text"
-      />
+      <!-- Pricing Section -->
+      <div class="form-section">
+        <h3>Pricing</h3>
+        <div class="form-group">
+          <label for="price">Price per night</label>
+          <div class="price-input-wrapper">
+            <span class="currency-symbol">₹</span>
+            <input
+              type="number"
+              id="price"
+              name="listing[price]"
+              value="<%= listing.price %>"
+              class="form-control price-input"
+              placeholder="2000"
+              min="1"
+              required
+            />
+          </div>
+          <small class="form-text">Set a competitive price for your area</small>
+        </div>
+      </div>
 
-      <br /><br />
+      <!-- Location Section -->
+      <div class="form-section">
+        <h3>Location</h3>
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="location">City/Area</label>
+            <input
+              type="text"
+              id="location"
+              name="listing[location]"
+              value="<%= listing.location %>"
+              class="form-control"
+              placeholder="e.g., Goa, Mumbai, Delhi"
+              required
+            />
+          </div>
+          <div class="form-group col-md-6">
+            <label for="country">Country</label>
+            <input
+              type="text"
+              id="country"
+              name="listing[country]"
+              value="<%= listing.country %>"
+              class="form-control"
+              placeholder="e.g., India"
+              required
+            />
+          </div>
+        </div>
+        <small class="form-text">Help guests find your place easily</small>
+      </div>
 
-      <input name="listing[price]" value="<%= listing.price%>" type="number" />
-      <br /><br />
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <button type="submit" class="btn btn-primary">
+          <i class="fas fa-save"></i>
+          Update Listing
+        </button>
+        <a href="/listings/<%= listing._id %>" class="btn btn-secondary">
+          <i class="fas fa-times"></i>
+          Cancel
+        </a>
+        <a href="/listings" class="btn btn-outline">
+          <i class="fas fa-arrow-left"></i>
+          Back to Listings
+        </a>
+      </div>
 
-      <input
-        name="listing[country]"
-        value="<%= listing.country%>"
-        type="text"
-      />
-      <br /><br />
-
-      <input
-        name="listing[location]"
-        value="<%= listing.location%>"
-        type="text"
-      />
-      <br /><br />
-
-      <button>Edit</button>
     </form>
-  </body>
-</html>
+  </div>
+</div>

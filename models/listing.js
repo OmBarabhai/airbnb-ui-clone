@@ -1,4 +1,4 @@
-const mongoose = require("mongoose");
+const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const listingSchema = new Schema({
@@ -8,13 +8,12 @@ const listingSchema = new Schema({
   },
   description: String,
   image: {
-    filename: String,
-    url: String,
+    type: String,
+    default: "/images/beach-cottage.jpg", // fallback image
   },
   price: Number,
   location: String,
   country: String,
 });
 
-const Listing = mongoose.model("Listing", listingSchema);
-module.exports = Listing;
+module.exports = mongoose.model("Listing", listingSchema);
