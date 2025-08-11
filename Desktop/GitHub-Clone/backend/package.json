@@ -1,0 +1,17 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [],
+  "author": "Om",
+  "license": "ISC",
+  "description": "Git-Clone",
+  "dependencies": {
+    "@supabase/supabase-js": "^2.54.0",
+    "uuid": "^11.1.0",
+    "yargs": "^18.0.0"
+  }
+}
