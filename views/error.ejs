@@ -1,0 +1,24 @@
+<% layout("layouts/boilerplate") %>
+
+<div class="error-page">
+  <div class="container">
+    <h1>Error <%= status %></h1>
+    <p><%= message %></p>
+    <a href="/listings" class="btn-primary">Back to Listings</a>
+  </div>
+</div>
+
+<style>
+.error-page {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+.error-page h1 {
+  font-size: 3rem;
+  color: #e74c3c;
+}
+.error-page p {
+  font-size: 1.25rem;
+  margin: 1rem 0 2rem;
+}
+</style>
